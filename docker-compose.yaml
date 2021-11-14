@@ -1,0 +1,22 @@
+
+version: '3.1'
+
+services:
+
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+      - ./banco_tcc.sql:/docker-entrypoint-initdb.d/banco_tcc.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+
+  api:
+    build: .
+    image: apptcc
+    restart: always
+    ports:
+      - 80:80
+    environment:
+      DB_HOST: Server=db;Database=tomoe_sushi;user=root; pwd=example
